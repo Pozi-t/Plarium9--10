@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31112.23
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Plarium9 -10", "Plarium9 -10\Plarium9 -10.csproj", "{0831672F-E4B1-49E1-B2A0-8A59EC29A32E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0831672F-E4B1-49E1-B2A0-8A59EC29A32E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0831672F-E4B1-49E1-B2A0-8A59EC29A32E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0831672F-E4B1-49E1-B2A0-8A59EC29A32E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0831672F-E4B1-49E1-B2A0-8A59EC29A32E}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1D83CCDB-1E1F-4A75-8FC2-0E77560E26EF}
+	EndGlobalSection
+EndGlobal
