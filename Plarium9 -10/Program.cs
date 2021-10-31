@@ -7,36 +7,27 @@ namespace Plarium9__10
     {
         static void Main(string[] args)
         {
-            Сatalog catalog = new();
+            Catalog catalog = new();
             string str, firstName, secondName, groupParam;
-
+            
             Console.WriteLine("Введите название продукта перечень параметров которого вы хотите увидеть");
             str = Console.ReadLine();
             catalog[str].ProductGroup.ShowParamsGroups();
-
+            
             Console.WriteLine("Введите с каким параметром товар вас не интересует");
             str = Console.ReadLine();
-            foreach (Product product in catalog)
-            {
-                if (!product.CheckProductParam(str)) Console.WriteLine($"Продукт {product.Name} не содержит параметр {str}");
-
-            }
-
+            
+            catalog.ShowWithoutParameter(str);
+            
             Console.WriteLine("Введите какую группу вы хотите вывести");
             str = Console.ReadLine();
-            foreach (Product product in catalog)
-            {
-                if (product.CheckGroup(str))
-                {
-                    Console.WriteLine($"{product.Name} входит в выбранную группу");
-                    product.ShowInfo();
-                }
-            }
-
+            catalog.ShowWithParameter(str);
+            
+            catalog.Show();
             Console.WriteLine("Введите продукты c каким параметром удалять");
             str = Console.ReadLine();
             catalog.Remove(str);
-
+            
 
             catalog.Show();
 
@@ -52,8 +43,7 @@ namespace Plarium9__10
             Console.WriteLine("\n\nПроизошла замена\n\n");
 
             catalog.Show();
-
-
+            
 
         }
     }

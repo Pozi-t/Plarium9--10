@@ -4,14 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 namespace Plarium9__10
 {
     [Serializable]
-    class Сatalog
+    class Catalog
     {
         List<Product> data;
-        public Сatalog()
+        public Catalog()
         {
             data = new();
             data.Add(new("Телефон", "Устройство связи"));
@@ -143,6 +142,15 @@ namespace Plarium9__10
             {
                 if (data[i].CheckProductParam(name)) data.RemoveAt(i);
             }
+            /*IEnumerable<Product> dat =
+            from d in data
+            where d.CheckProductParam(name) == true
+            select d;
+            foreach (Product item in dat)
+            {
+                data.Remove(item);
+            }*/
+
         }
         public void Show()
         {
@@ -170,6 +178,27 @@ namespace Plarium9__10
             data[firstId].ProductGroup.GroupsParams.Add(temp.Item1);
             data[secondId].ProductGroup.GroupsParams.RemoveAt(temp.Item2);
 
+        }
+        public void ShowWithoutParameter(string param)
+        {
+            /*var selectedProduct = from product in data // определяем каждый объект из teams как t
+                                  where !product.CheckProductParam(param) //фильтрация по критерию
+                                  select product; // выбираем объект*/
+            var selectedProduct = data.Where(p => p.CheckProductParam(param) == false).Select(p => p);
+            foreach (var item in selectedProduct)
+            {
+                Console.WriteLine($"Продукт {item.Name} не содержит параметр {param}");
+            }
+        }
+        public void ShowWithParameter(string param)
+        {
+            var selectedProduct = data.Where(p => p.CheckGroup(param)).Select(p => p);
+
+            foreach (Product product in selectedProduct)
+            {
+                Console.WriteLine($"{product.Name} входит в выбранную группу");
+                product.ShowInfo();
+            }
         }
     }
 }
