@@ -6,15 +6,12 @@ using System.Threading.Tasks;
 
 namespace Plarium9__10
 {
-    class ProductGroup
+    [Serializable]
+    public class ProductGroup
     {
         public string Name;
         public List<ParamsGroup> GroupsParams;
-        public ProductGroup()
-        {
-            Name = "";
-            GroupsParams = new List<ParamsGroup>();
-        }
+        public ProductGroup() { }
         public ProductGroup(string name)
         {
             this.Name = name;
@@ -61,6 +58,5 @@ namespace Plarium9__10
                 group.ShowInfo();
             }
         }
-
     }
 }

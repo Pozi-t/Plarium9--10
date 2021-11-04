@@ -3,13 +3,34 @@ using System.Collections.Generic;
 
 namespace Plarium9__10
 {
+    [Serializable]
+    public class Person
+    {
+        public string Name { get; set; }
+        public int Age { get; set; }
+ 
+        // стандартный конструктор без параметров
+        public Person()
+        { }
+ 
+        public Person(string name, int age)
+        {
+            Name = name;
+            Age = age;
+        }
+    }
     class Program
     {
         static void Main(string[] args)
         {
-            Catalog catalog = new();
-            string str, firstName, secondName, groupParam;
-            
+            Catalog catalog;
+            string str, firstName, secondName, groupParam;            
+            BD bd = new();
+            bd.WriteCommand("Привет gbljh");
+            //bd.ReadCatalog(out catalog);
+            //bd.Save(catalog);
+            //catalog.Show();
+            /*
             Console.WriteLine("Введите название продукта перечень параметров которого вы хотите увидеть");
             str = Console.ReadLine();
             catalog[str].ProductGroup.ShowParamsGroups();
@@ -41,8 +62,8 @@ namespace Plarium9__10
             catalog.MoveParameterGroup(firstName, secondName, groupParam);
 
             Console.WriteLine("\n\nПроизошла замена\n\n");
-
-            catalog.Show();
+            */
+            //catalog.Show();
             
 
         }

@@ -3,27 +3,48 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using System.Xml.Serialization;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Plarium9__10
 {
     class BD
     {
-        public BinaryFormatter Formatter;
-
-        public BD() => Formatter = new();
-        
-        public void Save(Catalog catalog)
+        XmlSerializer formatter;
+        public BD()
         {
-            // получаем поток, куда будем записывать сериализованный объект
-            using (FileStream fs = new FileStream("people.dat", FileMode.OpenOrCreate))
+            formatter = new XmlSerializer(typeof(List<Product>));
+        }
+        public void SaveCatalog(Catalog catalog)
+        {
+            using (FileStream fs = new("catalog.xml", FileMode.OpenOrCreate))
             {
-                Formatter.Serialize(fs, catalog);
-
+                formatter.Serialize(fs, catalog.Data);
                 Console.WriteLine("Объект сериализован");
             }
         }
+        public void ReadCatalog(out Catalog catalog)
+        {
+            catalog = new();
+            using (FileStream fs = new("catalog.xml", FileMode.OpenOrCreate))
+            {
+                catalog.Data = (List<Product>)formatter.Deserialize(fs);
+            }
+        }
+        public void ShowCommand()
+        {
 
+        }
+        public void WriteCommand(string str)
+        {
+            string text = "Привет мир!\nПока мир...\n";
+
+            using (StreamWriter sw = new("log.txt", true, System.Text.Encoding.Default))
+            {
+                sw.WriteLine(str);
+            }
+        }
     }
 }

@@ -6,15 +6,12 @@ using System.Threading.Tasks;
 
 namespace Plarium9__10
 {
-    class ParamsGroup
+    [Serializable]
+    public class ParamsGroup
     {
         public string Name { get; set; }
-        public Dictionary<string, string> Params;
-        ParamsGroup()
-        {
-            this.Name = "";
-            this.Params = new();
-        }
+        public XmlSerializableDictionary<string, string> Params;
+        ParamsGroup(){}
         public ParamsGroup(string name)
         {
             this.Name = name;

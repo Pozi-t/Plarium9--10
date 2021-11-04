@@ -7,10 +7,15 @@ using System.Threading.Tasks;
 namespace Plarium9__10
 {
     [Serializable]
-    class Catalog
+    public class Catalog
     {
         List<Product> data;
-        public Catalog()
+        public List<Product> Data {
+            get { return data; }
+            set { data = value; }
+        }
+        public Catalog() { }
+        public Catalog(bool i)
         {
             data = new();
             data.Add(new("Телефон", "Устройство связи"));
@@ -199,6 +204,10 @@ namespace Plarium9__10
                 Console.WriteLine($"{product.Name} входит в выбранную группу");
                 product.ShowInfo();
             }
+        }
+        public void Add(Product p)
+        {
+            data.Add(p);
         }
     }
 }

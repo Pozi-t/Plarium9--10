@@ -3,23 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace Plarium9__10
 {
-    class Product
+    [Serializable]
+    public class Product
     {
         public string Name { get; set; }
         public string Description { get; set; }
         public DateTime Date { get; set; }
         public ProductGroup ProductGroup;
 
-        public Product()
-        {
-            Name = "";
-            Description = "";
-            Date = DateTime.Now;
-            this.ProductGroup = new ProductGroup();
-        }
+        public Product() {}
         public Product(string name, string description)
         {
             this.Name = name;
