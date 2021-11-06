@@ -143,10 +143,16 @@ namespace Plarium9__10
         }
         public void Remove(string name)
         {
+            bool contains = false;
             for (int i = 0; i < data.Count; i++)
             {
-                if (data[i].CheckProductParam(name)) data.RemoveAt(i);
+                if (data[i].CheckProductParam(name)) { 
+                    data.RemoveAt(i); 
+                    contains = true; 
+                }
             }
+            if (contains) BD.WriteCommand($"Продукт с параметром {name} найден и идалён");
+            else BD.WriteCommand($"Продукт с параметром {name} не найден");
             /*IEnumerable<Product> dat =
             from d in data
             where d.CheckProductParam(name) == true
@@ -164,6 +170,7 @@ namespace Plarium9__10
             {
                 product.ShowInfo();
             }
+            BD.WriteCommand("Продемонстирован каталог всех товаров");
         }
         public int FindProductOfName(string name)
         {
@@ -175,14 +182,22 @@ namespace Plarium9__10
         }
         public void MoveParameterGroup(string firstName, string secondName, string groupParam)
         {
-            int firstId = FindProductOfName(firstName);
-            int secondId = FindProductOfName(secondName);
+            try
+            {
+                int firstId = FindProductOfName(firstName);
+                int secondId = FindProductOfName(secondName);
 
-            Console.WriteLine($"{firstId} {secondId}");
-            (ParamsGroup, int) temp = data[secondId].ProductGroup.FindParamsGroup(groupParam);
-            data[firstId].ProductGroup.GroupsParams.Add(temp.Item1);
-            data[secondId].ProductGroup.GroupsParams.RemoveAt(temp.Item2);
+                Console.WriteLine($"{firstId} {secondId}");
+                (ParamsGroup, int) temp = data[secondId].ProductGroup.FindParamsGroup(groupParam);
+                data[firstId].ProductGroup.GroupsParams.Add(temp.Item1);
+                data[secondId].ProductGroup.GroupsParams.RemoveAt(temp.Item2);
 
+                BD.WriteCommand($"Группа параметров {temp.Item1.Name} была перенесена из товара {data[firstId].Name} в товар {data[secondId].Name}");
+            }
+            catch (Exception e)
+            {
+                BD.WriteCommand($"перенос группы параметр не удался. Ошибка: {e.Message}");
+            }
         }
         public void ShowWithoutParameter(string param)
         {
@@ -194,6 +209,7 @@ namespace Plarium9__10
             {
                 Console.WriteLine($"Продукт {item.Name} не содержит параметр {param}");
             }
+            BD.WriteCommand($"Продемонстрированы не содержащие параметр {param}");
         }
         public void ShowWithParameter(string param)
         {
@@ -204,10 +220,12 @@ namespace Plarium9__10
                 Console.WriteLine($"{product.Name} входит в выбранную группу");
                 product.ShowInfo();
             }
+            BD.WriteCommand($"Продемонстрированы содержащие параметр {param}");
         }
         public void Add(Product p)
         {
             data.Add(p);
+            BD.WriteCommand($"В каталог добавлен продукт {p.Name}");
         }
     }
 }

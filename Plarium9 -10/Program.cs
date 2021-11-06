@@ -24,12 +24,10 @@ namespace Plarium9__10
         static void Main(string[] args)
         {
             Catalog catalog;
-            string str, firstName, secondName, groupParam;            
+            string str, firstName, secondName, groupParam, ch;
             BD bd = new();
-            bd.WriteCommand("Привет gbljh");
-            //bd.ReadCatalog(out catalog);
-            //bd.Save(catalog);
-            //catalog.Show();
+            bd.ReadCatalog(out catalog);
+
             /*
             Console.WriteLine("Введите название продукта перечень параметров которого вы хотите увидеть");
             str = Console.ReadLine();
@@ -43,7 +41,7 @@ namespace Plarium9__10
             Console.WriteLine("Введите какую группу вы хотите вывести");
             str = Console.ReadLine();
             catalog.ShowWithParameter(str);
-            
+            Console.ReadKey();
             catalog.Show();
             Console.WriteLine("Введите продукты c каким параметром удалять");
             str = Console.ReadLine();
@@ -63,9 +61,22 @@ namespace Plarium9__10
 
             Console.WriteLine("\n\nПроизошла замена\n\n");
             */
-            //catalog.Show();
-            
+            catalog.Show();
 
+            do
+            {
+                Console.WriteLine("Желаете сохранить результат работы с каталогом ?\nВведите : yes/not");
+                ch = Console.ReadLine();
+            } while (ch != "yes" && ch != "not");
+            if (ch == "yes") bd.SaveCatalog(catalog);
+            else BD.WriteCommand("Пользователь отказался сохранить каталог в конце взаимодействия с программой");
+            
+            do
+            {
+                Console.WriteLine("Желаете увидеть журеал событий ?\n Введите : yes/not");
+                ch = Console.ReadLine();
+            } while (ch != "yes" && ch != "not");
+            if (ch == "yes") bd.ShowCommand();
         }
     }
 }

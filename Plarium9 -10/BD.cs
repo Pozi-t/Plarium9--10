@@ -19,31 +19,52 @@ namespace Plarium9__10
         }
         public void SaveCatalog(Catalog catalog)
         {
-            using (FileStream fs = new("catalog.xml", FileMode.OpenOrCreate))
+            try
             {
-                formatter.Serialize(fs, catalog.Data);
-                Console.WriteLine("Объект сериализован");
+                using (FileStream fs = new("catalog.xml", FileMode.OpenOrCreate))
+                {
+                    formatter.Serialize(fs, catalog.Data);
+                    WriteCommand("Каталог сериализован и сохранен");
+                }
+            }
+            catch (Exception e)
+            {
+                WriteCommand($"Каталог не удалось сериализован и сохранить. Ошибка : {e.Message}");
             }
         }
         public void ReadCatalog(out Catalog catalog)
         {
             catalog = new();
-            using (FileStream fs = new("catalog.xml", FileMode.OpenOrCreate))
+            try
             {
-                catalog.Data = (List<Product>)formatter.Deserialize(fs);
+                using (FileStream fs = new("catalog.xml", FileMode.OpenOrCreate))
+                {
+                    catalog.Data = (List<Product>)formatter.Deserialize(fs);
+                    WriteCommand("Каталог десериализован и введён в эксплатацию");
+                }
+            }
+            catch (Exception e)
+            {
+                WriteCommand($"Каталог не удалось десериализован и начать использовать. Ошибка : {e.Message}");
             }
         }
         public void ShowCommand()
         {
+            using (StreamReader sr = new("log.txt", System.Text.Encoding.Default))
+            {
+                string line;
+                while ((line = sr.ReadLine()) != null)
+                {
+                    Console.WriteLine(line);
+                }
+            }
 
         }
-        public void WriteCommand(string str)
+        public static void WriteCommand(string str)
         {
-            string text = "Привет мир!\nПока мир...\n";
-
             using (StreamWriter sw = new("log.txt", true, System.Text.Encoding.Default))
             {
-                sw.WriteLine(str);
+                sw.WriteLine(str + " " + DateTime.Now.ToString());
             }
         }
     }
