@@ -48,9 +48,9 @@ namespace Plarium9__10
                 WriteCommand($"Каталог не удалось десериализован и начать использовать. Ошибка : {e.Message}");
             }
         }
-        public void ShowCommand()
+        public void ShowCommand(string path)
         {
-            using (StreamReader sr = new("log.txt", System.Text.Encoding.Default))
+            using (StreamReader sr = new(path, System.Text.Encoding.Default))
             {
                 string line;
                 while ((line = sr.ReadLine()) != null)
@@ -58,13 +58,24 @@ namespace Plarium9__10
                     Console.WriteLine(line);
                 }
             }
-
         }
         public static void WriteCommand(string str)
         {
             using (StreamWriter sw = new("log.txt", true, System.Text.Encoding.Default))
             {
                 sw.WriteLine(str + " " + DateTime.Now.ToString());
+            }
+        }
+        public static void WriteLinq(IEnumerable<Product> cat)
+        {
+            string data = "";
+            foreach (var item in cat)
+            {
+                data += $"{item.Name} {item.Description} {item.Date}\n";
+            }
+            using (StreamWriter sw = new StreamWriter("data.txt", false, System.Text.Encoding.Default))
+            {
+                sw.WriteLine(data);
             }
         }
     }

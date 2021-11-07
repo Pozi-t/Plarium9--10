@@ -205,6 +205,7 @@ namespace Plarium9__10
                                   where !product.CheckProductParam(param) //фильтрация по критерию
                                   select product; // выбираем объект*/
             var selectedProduct = data.Where(p => p.CheckProductParam(param) == false).Select(p => p);
+            BD.WriteLinq(selectedProduct);
             foreach (var item in selectedProduct)
             {
                 Console.WriteLine($"Продукт {item.Name} не содержит параметр {param}");

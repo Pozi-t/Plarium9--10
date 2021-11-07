@@ -3,22 +3,6 @@ using System.Collections.Generic;
 
 namespace Plarium9__10
 {
-    [Serializable]
-    public class Person
-    {
-        public string Name { get; set; }
-        public int Age { get; set; }
- 
-        // стандартный конструктор без параметров
-        public Person()
-        { }
- 
-        public Person(string name, int age)
-        {
-            Name = name;
-            Age = age;
-        }
-    }
     class Program
     {
         static void Main(string[] args)
@@ -32,12 +16,12 @@ namespace Plarium9__10
             Console.WriteLine("Введите название продукта перечень параметров которого вы хотите увидеть");
             str = Console.ReadLine();
             catalog[str].ProductGroup.ShowParamsGroups();
-            
+            */
             Console.WriteLine("Введите с каким параметром товар вас не интересует");
             str = Console.ReadLine();
             
             catalog.ShowWithoutParameter(str);
-            
+            /*
             Console.WriteLine("Введите какую группу вы хотите вывести");
             str = Console.ReadLine();
             catalog.ShowWithParameter(str);
@@ -73,10 +57,10 @@ namespace Plarium9__10
             
             do
             {
-                Console.WriteLine("Желаете увидеть журеал событий ?\n Введите : yes/not");
+                Console.WriteLine("Желаете увидеть выборку ?\nВведите : yes/not");
                 ch = Console.ReadLine();
             } while (ch != "yes" && ch != "not");
-            if (ch == "yes") bd.ShowCommand();
+            if (ch == "yes") bd.ShowCommand("data.txt");
         }
     }
 }
