@@ -10,18 +10,14 @@ using System.Text.Json.Serialization;
 
 namespace Plarium9__10
 {
-    class BD
+    public class BD
     {
-        XmlSerializer formatter;
-        public BD()
+        public static void SaveCatalog(Catalog catalog,string path)
         {
-            formatter = new XmlSerializer(typeof(List<Product>));
-        }
-        public void SaveCatalog(Catalog catalog)
-        {
+            XmlSerializer formatter = new XmlSerializer(typeof(List<Product>));
             try
             {
-                using (FileStream fs = new("catalog.xml", FileMode.OpenOrCreate))
+                using (FileStream fs = new(path, FileMode.OpenOrCreate))
                 {
                     formatter.Serialize(fs, catalog.Data);
                     WriteCommand("Каталог сериализован и сохранен");
@@ -32,23 +28,25 @@ namespace Plarium9__10
                 WriteCommand($"Каталог не удалось сериализован и сохранить. Ошибка : {e.Message}");
             }
         }
-        public void ReadCatalog(out Catalog catalog)
+        public static void ReadCatalog(out Catalog catalog, string path)
         {
+            XmlSerializer formatter = new XmlSerializer(typeof(List<Product>));
             catalog = new();
             try
             {
-                using (FileStream fs = new("catalog.xml", FileMode.OpenOrCreate))
+                using (FileStream fs = new(path, FileMode.OpenOrCreate))
                 {
                     catalog.Data = (List<Product>)formatter.Deserialize(fs);
                     WriteCommand("Каталог десериализован и введён в эксплатацию");
                 }
+                if (File.Exists("temp\\tempData.xml")) File.Delete("temp\\tempData.xml");
             }
             catch (Exception e)
             {
                 WriteCommand($"Каталог не удалось десериализован и начать использовать. Ошибка : {e.Message}");
             }
         }
-        public void ShowCommand(string path)
+        public static void ShowCommand(string path)
         {
             using (StreamReader sr = new(path, System.Text.Encoding.Default))
             {

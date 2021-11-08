@@ -189,14 +189,15 @@ namespace Plarium9__10
 
                 Console.WriteLine($"{firstId} {secondId}");
                 (ParamsGroup, int) temp = data[secondId].ProductGroup.FindParamsGroup(groupParam);
-                data[firstId].ProductGroup.GroupsParams.Add(temp.Item1);
-                data[secondId].ProductGroup.GroupsParams.RemoveAt(temp.Item2);
+                this[firstName].ProductGroup.GroupsParams.Add(temp.Item1);
+                this[secondName].ProductGroup.GroupsParams.RemoveAt(temp.Item2);
 
                 BD.WriteCommand($"Группа параметров {temp.Item1.Name} была перенесена из товара {data[firstId].Name} в товар {data[secondId].Name}");
             }
             catch (Exception e)
             {
                 BD.WriteCommand($"перенос группы параметр не удался. Ошибка: {e.Message}");
+                BD.SaveCatalog(this, "temp//tempData.xml");
             }
         }
         public void ShowWithoutParameter(string param)

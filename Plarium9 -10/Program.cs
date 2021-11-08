@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Plarium9__10
 {
@@ -9,19 +10,27 @@ namespace Plarium9__10
         {
             Catalog catalog;
             string str, firstName, secondName, groupParam, ch;
-            BD bd = new();
-            bd.ReadCatalog(out catalog);
+            if (File.Exists("temp\\tempData.xml"))
+            {
+                do
+                {
+                    Console.WriteLine("Обнаружен файл экстренного сохранения ?\nЖелаете его выгрузить : yes/not");
+                    ch = Console.ReadLine();
+                } while (ch != "yes" && ch != "not");
+                if (ch == "yes") BD.ReadCatalog(out catalog, "temp\\tempData.xml");
+                else BD.ReadCatalog(out catalog, "catalog.xml");
+            } else BD.ReadCatalog(out catalog, "catalog.xml");
 
-            /*
+            
             Console.WriteLine("Введите название продукта перечень параметров которого вы хотите увидеть");
             str = Console.ReadLine();
-            catalog[str].ProductGroup.ShowParamsGroups();
-            */
+            if(catalog[str] != null) catalog[str].ProductGroup.ShowParamsGroups();
+            
             Console.WriteLine("Введите с каким параметром товар вас не интересует");
             str = Console.ReadLine();
             
             catalog.ShowWithoutParameter(str);
-            /*
+            
             Console.WriteLine("Введите какую группу вы хотите вывести");
             str = Console.ReadLine();
             catalog.ShowWithParameter(str);
@@ -44,15 +53,15 @@ namespace Plarium9__10
             catalog.MoveParameterGroup(firstName, secondName, groupParam);
 
             Console.WriteLine("\n\nПроизошла замена\n\n");
-            */
+            
             catalog.Show();
-
+            
             do
             {
                 Console.WriteLine("Желаете сохранить результат работы с каталогом ?\nВведите : yes/not");
                 ch = Console.ReadLine();
             } while (ch != "yes" && ch != "not");
-            if (ch == "yes") bd.SaveCatalog(catalog);
+            if (ch == "yes") BD.SaveCatalog(catalog, "catalog.xml");
             else BD.WriteCommand("Пользователь отказался сохранить каталог в конце взаимодействия с программой");
             
             do
@@ -60,7 +69,7 @@ namespace Plarium9__10
                 Console.WriteLine("Желаете увидеть выборку ?\nВведите : yes/not");
                 ch = Console.ReadLine();
             } while (ch != "yes" && ch != "not");
-            if (ch == "yes") bd.ShowCommand("data.txt");
+            if (ch == "yes") BD.ShowCommand("data.txt");
         }
     }
 }
