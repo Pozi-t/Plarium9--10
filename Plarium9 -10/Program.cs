@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Plarium9__10
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
             Catalog catalog;
             string str, firstName, secondName, groupParam, ch;
+            BD db = new("catalog.xml");
             if (File.Exists("temp\\tempData.xml"))
             {
                 do
@@ -17,11 +20,13 @@ namespace Plarium9__10
                     Console.WriteLine("Обнаружен файл экстренного сохранения ?\nЖелаете его выгрузить : yes/not");
                     ch = Console.ReadLine();
                 } while (ch != "yes" && ch != "not");
-                if (ch == "yes") BD.ReadCatalog(out catalog, "temp\\tempData.xml");
-                else BD.ReadCatalog(out catalog, "catalog.xml");
-            } else BD.ReadCatalog(out catalog, "catalog.xml");
+                if (ch == "yes")
+                {
+                    db.Path = "temp\\tempData.xml";
+                }
+            }
+            catalog = await db.ReadAsync();
 
-            
             Console.WriteLine("Введите название продукта перечень параметров которого вы хотите увидеть");
             str = Console.ReadLine();
             if(catalog[str] != null) catalog[str].ProductGroup.ShowParamsGroups();
@@ -55,21 +60,26 @@ namespace Plarium9__10
             Console.WriteLine("\n\nПроизошла замена\n\n");
             
             catalog.Show();
-            
             do
             {
                 Console.WriteLine("Желаете сохранить результат работы с каталогом ?\nВведите : yes/not");
                 ch = Console.ReadLine();
             } while (ch != "yes" && ch != "not");
-            if (ch == "yes") BD.SaveCatalog(catalog, "catalog.xml");
-            else BD.WriteCommand("Пользователь отказался сохранить каталог в конце взаимодействия с программой");
+            if (ch == "yes"){
+                db.Path = "catalog.xml";
+                Thread saveThread = new(new ParameterizedThreadStart(db.SaveCatalog));
+                saveThread.Start(catalog);
+            }
             
             do
             {
                 Console.WriteLine("Желаете увидеть выборку ?\nВведите : yes/not");
                 ch = Console.ReadLine();
             } while (ch != "yes" && ch != "not");
-            if (ch == "yes") BD.ShowCommand("data.txt");
+            if (ch == "yes"){
+                Thread myThread = new(new ParameterizedThreadStart(BD.ShowFile));
+                myThread.Start("data.txt");
+            }
         }
     }
 }

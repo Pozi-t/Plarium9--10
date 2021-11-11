@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Threading;
 namespace Plarium9__10
 {
     [Serializable]
@@ -151,8 +152,9 @@ namespace Plarium9__10
                     contains = true; 
                 }
             }
-            if (contains) BD.WriteCommand($"Продукт с параметром {name} найден и идалён");
-            else BD.WriteCommand($"Продукт с параметром {name} не найден");
+            Thread myThread = new(new ParameterizedThreadStart(BD.WriteCommand));
+            if (contains) myThread.Start($"Продукт с параметром {name} найден и идалён");
+            else myThread.Start($"Продукт с параметром {name} не найден");
             /*IEnumerable<Product> dat =
             from d in data
             where d.CheckProductParam(name) == true
@@ -170,7 +172,8 @@ namespace Plarium9__10
             {
                 product.ShowInfo();
             }
-            BD.WriteCommand("Продемонстирован каталог всех товаров");
+            Thread myThread = new(new ParameterizedThreadStart(BD.WriteCommand));
+            myThread.Start("Продемонстирован каталог всех товаров");
         }
         public int FindProductOfName(string name)
         {
@@ -191,13 +194,14 @@ namespace Plarium9__10
                 (ParamsGroup, int) temp = data[secondId].ProductGroup.FindParamsGroup(groupParam);
                 this[firstName].ProductGroup.GroupsParams.Add(temp.Item1);
                 this[secondName].ProductGroup.GroupsParams.RemoveAt(temp.Item2);
-
-                BD.WriteCommand($"Группа параметров {temp.Item1.Name} была перенесена из товара {data[firstId].Name} в товар {data[secondId].Name}");
+                Thread myThread = new(new ParameterizedThreadStart(BD.WriteCommand));
+                myThread.Start($"Группа параметров {temp.Item1.Name} была перенесена из товара {data[firstId].Name} в товар {data[secondId].Name}");
             }
             catch (Exception e)
             {
-                BD.WriteCommand($"перенос группы параметр не удался. Ошибка: {e.Message}");
-                BD.SaveCatalog(this, "temp//tempData.xml");
+                Thread myThread = new(new ParameterizedThreadStart(BD.WriteCommand));
+                myThread.Start($"перенос группы параметр не удался. Ошибка: {e.Message}");
+                new BD("temp//tempData.xml").SaveCatalog(this);
             }
         }
         public void ShowWithoutParameter(string param)
@@ -206,12 +210,14 @@ namespace Plarium9__10
                                   where !product.CheckProductParam(param) //фильтрация по критерию
                                   select product; // выбираем объект*/
             var selectedProduct = data.Where(p => p.CheckProductParam(param) == false).Select(p => p);
-            BD.WriteLinq(selectedProduct);
+            Thread linqThread = new(new ParameterizedThreadStart(BD.WriteLinq));
+            linqThread.Start(selectedProduct);
             foreach (var item in selectedProduct)
             {
                 Console.WriteLine($"Продукт {item.Name} не содержит параметр {param}");
             }
-            BD.WriteCommand($"Продемонстрированы не содержащие параметр {param}");
+            Thread myThread = new(new ParameterizedThreadStart(BD.WriteCommand));
+            myThread.Start($"Продемонстрированы не содержащие параметр {param}");
         }
         public void ShowWithParameter(string param)
         {
@@ -222,12 +228,14 @@ namespace Plarium9__10
                 Console.WriteLine($"{product.Name} входит в выбранную группу");
                 product.ShowInfo();
             }
-            BD.WriteCommand($"Продемонстрированы содержащие параметр {param}");
+            Thread myThread = new(new ParameterizedThreadStart(BD.WriteCommand));
+            myThread.Start($"Продемонстрированы содержащие параметр {param}");
         }
         public void Add(Product p)
         {
             data.Add(p);
-            BD.WriteCommand($"В каталог добавлен продукт {p.Name}");
+            Thread myThread = new(new ParameterizedThreadStart(BD.WriteCommand));
+            myThread.Start($"В каталог добавлен продукт {p.Name}");
         }
     }
 }
